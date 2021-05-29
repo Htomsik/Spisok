@@ -83,6 +83,7 @@
     <Style TargetType="Button">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="DimGray" />
+      
     </Style>
 
 

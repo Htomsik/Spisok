@@ -72,6 +72,9 @@
                     Margin="2"
                     Foreground="{DynamicResource ColorDLC}"
                     Icon="Solid_Times" />
+
+
+
             </Button>
 
             <!--  Иконка кота  -->
@@ -94,41 +97,59 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-
+            <!--  Список категорий  -->
             <GroupBox BorderThickness="0" Header="Категория">
 
                 <!--  Кнопки  -->
                 <DockPanel>
 
+                    <!--  Панель снизу  -->
                     <Grid Margin="5" DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="25" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Button
-                 
                             Grid.Column="0"
                             Width="25"
                             HorizontalAlignment="Left"
-                            Command="{Binding AddCotegoryCommand}">
-                            <faIc:ImageAwesome
-                                Margin="2"
-                                Foreground="LightGreen"
-                                Icon="Solid_Plus" />
+                            Command="{Binding AddCotegoryCommand, UpdateSourceTrigger=PropertyChanged}">
+                            <StackPanel>
+
+                                <faIc:ImageAwesome
+                                    Margin="2"
+                                    Foreground="LightGreen"
+                                    Icon="Solid_Plus" />
+
+                            </StackPanel>
                         </Button>
 
-                        <TextBox x:Name="_AddCotegotyTextBox" Grid.Column="1" Margin="5,0,0,0" />
+                        <!--  Текстбокс для ввода названия новой группы/переименования  -->
+
+                        <TextBox
+                            x:Name="_AddCotegotyTextBox"
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            Text="{Binding TextBoxText, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
 
                     <!--  Категории  -->
                     <ListBox
                         Background="Transparent"
-                        DisplayMemberPath="Name"
                         ItemsSource="{Binding Cotegory}"
                         SelectedIndex="0"
                         SelectedItem="{Binding SelectedCotegory}">
 
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Margin="5,0" Text="{Binding Tovar.Count, StringFormat=[{0}]}" />
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                         <!--  Контекстное меню  -->
                         <ListBox.ContextMenu>
                             <ContextMenu>
@@ -136,9 +157,14 @@
                                     Command="{Binding DeleteCotegoryCommand}"
                                     CommandParameter="{Binding SelectedCotegory}"
                                     Header="Удалить" />
+                                <MenuItem
+                                    Command="{Binding ChangeCotegoryCommand, UpdateSourceTrigger=PropertyChanged}"
+                                    CommandParameter="{Binding SelectedCotegory}"
+                                    Header="Переименовать" />
                             </ContextMenu>
                         </ListBox.ContextMenu>
                     </ListBox>
+
                 </DockPanel>
 
 
@@ -150,21 +176,51 @@
                 Grid.Column="1"
                 BorderThickness="0"
                 Header="{Binding SelectedCotegory.Name}">
-                <DataGrid
-                    AutoGenerateColumns="False"
-                    ItemsSource="{Binding SelectedCotegory.Tovar}"
-                    Style="{DynamicResource DataGridTemplate}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
-                        <DataGridTextColumn Binding="{Binding Price}" Header="Цена" />
-                        <DataGridHyperlinkColumn Binding="{Binding URL}" Header="Ссылка" />
-                        <DataGridCheckBoxColumn Binding="{Binding Status}" Header="Статус" />
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding Descriptions}"
-                            Header="Заметки" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DockPanel>
+
+                    <!--  Нижняя панель  -->
+                    <Grid Margin="5" DockPanel.Dock="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            Grid.Column="0"
+                            Width="25"
+                            HorizontalAlignment="Left"
+                            Command="{Binding AddCotegoryCommand, UpdateSourceTrigger=PropertyChanged}">
+                            <StackPanel>
+
+                                <faIc:ImageAwesome
+                                    Margin="2"
+                                    Foreground="LightGreen"
+                                    Icon="Solid_Plus" />
+
+                            </StackPanel>
+                        </Button>
+
+                    </Grid>
+                    
+                    <!--  Сюда выводится значения в категориях  -->
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        ItemsSource="{Binding SelectedCotegory.Tovar}"
+                        Style="{DynamicResource DataGridTemplate}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
+                            <DataGridTextColumn Binding="{Binding Price}" Header="Цена" />
+                            <DataGridHyperlinkColumn Binding="{Binding URL}" Header="Ссылка" />
+                            <DataGridCheckBoxColumn Binding="{Binding Status}" Header="Статус" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Descriptions}"
+                                Header="Заметки" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </DockPanel>
+
+
             </GroupBox>
         </Grid>
     </Grid>

@@ -14,7 +14,13 @@ namespace SpisokPokupok.Viewmodels
 {
     class MainWindowViewModel : BaseViewModel
     {
+        #region Свойства
+
         #region Title
+
+        /// <summary>
+        /// Заголовок программы
+        /// </summary>
         private string _Title = "Список покупок";
         public string Title
         {
@@ -24,18 +30,38 @@ namespace SpisokPokupok.Viewmodels
 
         #endregion
 
-        /*--------------------------------------------------------------------------*/
+        #region TextBoxText
+        /// <summary>
+        /// Текст в текстбоксе для добавления/редактирования названия котегории
+        /// </summary>
+        private string _TextBoxText;
+        public string TextBoxText
+        {
+            get => _TextBoxText;
+            set => Set(ref _TextBoxText, value);
+        }
+
+        #endregion
+
+        #endregion
 
         #region модели
 
         #region Коллекция категорий
 
+        /// <summary>
+        /// Колекция (список) категорий
+        /// </summary>
         public ObservableCollection<Cotegory> Cotegory { get; }
 
+       
         #endregion
 
-        #region выбор группы
+        #region Выбор группы
 
+        /// <summary>
+        /// Регистрирует выбранную котегорию
+        /// </summary>
         private Cotegory _SelectedCotegory;
 
         public Cotegory SelectedCotegory
@@ -49,30 +75,41 @@ namespace SpisokPokupok.Viewmodels
 
         #endregion
 
-        #region команды
+        #region Команды
 
         #region Добавление новой категории
+
+        /// <summary>
+        /// Добавление новой котегории (Принимает значение названия из текстбокса)
+        /// </summary>
         public ICommand AddCotegoryCommand { get; }
 
-        private bool CanAddCotegoryCommandExecute(object p) => true;
+        private bool CanAddCotegoryCommandExecute(object p) => !string.IsNullOrEmpty(TextBoxText);
 
         private void OnAddCotegoryCommandExecuted(object p)
         {
-            var cotegory_max_index = Cotegory.Count + 1;
+            
+            
 
             var new_cotegory = new Cotegory //подготовка нового элемента в список категорий
             {
-                Name = $"Категория {cotegory_max_index}",
+                Name = TextBoxText,
                 Tovar = new ObservableCollection<Tovar>()
             };
 
             Cotegory.Add(new_cotegory); //добавление новой категории в список категорий
 
+            TextBoxText = string.Empty;
+
         }
 
         #endregion
 
-        #region Удаление Котегории
+        #region Удаление Категории
+
+        /// <summary>
+        /// Удаление котегории
+        /// </summary>
         public ICommand DeleteCotegoryCommand { get; }
 
         private bool CanDeleteCotegoryCommandExecute(object p) => p is Cotegory cotegory && Cotegory.Contains(cotegory);
@@ -86,6 +123,28 @@ namespace SpisokPokupok.Viewmodels
 
         #endregion
 
+        #region Редактировании названия категории
+
+        /// <summary>
+        /// Редоктирование названия котегории (Принимает значение названия из текстбокса)
+        /// </summary>
+        public ICommand ChangeCotegoryCommand { get; }
+
+        private bool CanChangeCotegoryCommandExecute(object p) => p is Cotegory cotegory && Cotegory.Contains(cotegory)  && !string.IsNullOrEmpty(TextBoxText);
+
+        private void OnChangeCotegoryCommandExecuted(object p)
+        {
+            if (!(p is Cotegory cotegory)) return;
+
+            cotegory.Name = TextBoxText;
+
+            TextBoxText = string.Empty;
+
+        }
+
+      
+
+        #endregion
 
         #endregion
 
@@ -97,8 +156,12 @@ namespace SpisokPokupok.Viewmodels
 
             DeleteCotegoryCommand = new LambdaCommand(OnDeleteCotegoryCommandExecuted,CanDeleteCotegoryCommandExecute);
 
+            ChangeCotegoryCommand = new LambdaCommand(OnChangeCotegoryCommandExecuted, CanChangeCotegoryCommandExecute);
+
 
             #endregion
+
+            #region Временное заполнение данных пока программа не готова
 
             var student = Enumerable.Range(1, 5).Select(i => new Tovar()
             {
@@ -108,7 +171,7 @@ namespace SpisokPokupok.Viewmodels
                 Status= false
             }) ;
 
-            var cotegory = Enumerable.Range(1,20).Select(i => new Cotegory()
+            var cotegory = Enumerable.Range(1,5).Select(i => new Cotegory()
             {
                 Name = $"Категория {i}",
                 Tovar = new ObservableCollection<Tovar>(student)
@@ -117,6 +180,7 @@ namespace SpisokPokupok.Viewmodels
 
             Cotegory = new ObservableCollection<Cotegory>(cotegory);
 
+            #endregion
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SpisokPokupok.Viewmodels.Base;
 
 namespace SpisokPokupok.Models
 {
@@ -17,9 +18,15 @@ namespace SpisokPokupok.Models
         public string Descriptions { get; set; }
     }
 
-    public class Cotegory
+    public class Cotegory: BaseViewModel
     {
-        public string Name { get; set; }
+        private string name;
+        public string Name 
+        {
+            get => name;
+            set => Set(ref name, value);
+          
+        }
 
         public ICollection<Tovar> Tovar { get; set; }
     }
