@@ -1,0 +1,171 @@
+﻿<Window
+    x:Class="SpisokPokupok.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:com="clr-namespace:SpisokPokupok.Infrastructures.Commands"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:faIc="http://schemas.fontawesome.com/icons/"
+    xmlns:local="clr-namespace:SpisokPokupok"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:SpisokPokupok.Viewmodels"
+    Title="MainWindow"
+    Width="650"
+    Height="500"
+    Background="Transparent"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+
+    <!--  Бинд датаконтекст к вьюмоделу viewmodel  -->
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+
+    <!--  Добавление ресурсов  -->
+    <Window.Resources>
+        <ResourceDictionary>
+            <com:CloseApplicationCommand x:Key="CommandCloseApplication" />
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <!--  Вся форма (Ничего не добавлять на нее!)  -->
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!--  Меню  -->
+        <Menu
+            Grid.Row="1"
+            Background="{DynamicResource ColorElement}"
+            BorderBrush="{DynamicResource ColorBorder}"
+            BorderThickness="2">
+
+            <MenuItem Header="Файл">
+                <MenuItem Header="Открыть" />
+                <MenuItem Header="Создать" />
+                <MenuItem Header="Сохранить как" />
+            </MenuItem>
+        </Menu>
+        <!--  Верхняя панель  -->
+        <Grid Background="{DynamicResource ColorElement}" MouseLeftButtonDown="DragpanelMove">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <!--  Кнопка выключения  -->
+            <Button
+                Grid.Column="2"
+                Height="25"
+                Margin="280,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{StaticResource CommandCloseApplication}">
+                <faIc:ImageAwesome
+                    Margin="2"
+                    Foreground="{DynamicResource ColorDLC}"
+                    Icon="Solid_Times" />
+            </Button>
+
+            <!--  Иконка кота  -->
+            <Image
+                Margin="5,0,0,0"
+                HorizontalAlignment="Left"
+                Source="\Assets\BorderIcon\CatIcon.png" />
+
+            <!--  Название проекта  -->
+            <TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Text="{Binding Title}" />
+        </Grid>
+
+        <!--  Остальное пространство  -->
+        <Grid Grid.Row="2" Background="{DynamicResource ColorFont}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <GroupBox BorderThickness="0" Header="Категория">
+
+                <!--  Кнопки  -->
+                <DockPanel>
+
+                    <Grid Margin="5" DockPanel.Dock="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                 
+                            Grid.Column="0"
+                            Width="25"
+                            HorizontalAlignment="Left"
+                            Command="{Binding AddCotegoryCommand}">
+                            <faIc:ImageAwesome
+                                Margin="2"
+                                Foreground="LightGreen"
+                                Icon="Solid_Plus" />
+                        </Button>
+
+                        <TextBox x:Name="_AddCotegotyTextBox" Grid.Column="1" Margin="5,0,0,0" />
+
+                    </Grid>
+
+                    <!--  Категории  -->
+                    <ListBox
+                        Background="Transparent"
+                        DisplayMemberPath="Name"
+                        ItemsSource="{Binding Cotegory}"
+                        SelectedIndex="0"
+                        SelectedItem="{Binding SelectedCotegory}">
+
+                        <!--  Контекстное меню  -->
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem
+                                    Command="{Binding DeleteCotegoryCommand}"
+                                    CommandParameter="{Binding SelectedCotegory}"
+                                    Header="Удалить" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                </DockPanel>
+
+
+            </GroupBox>
+
+
+            <!--  Список Групп  -->
+            <GroupBox
+                Grid.Column="1"
+                BorderThickness="0"
+                Header="{Binding SelectedCotegory.Name}">
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    ItemsSource="{Binding SelectedCotegory.Tovar}"
+                    Style="{DynamicResource DataGridTemplate}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
+                        <DataGridTextColumn Binding="{Binding Price}" Header="Цена" />
+                        <DataGridHyperlinkColumn Binding="{Binding URL}" Header="Ссылка" />
+                        <DataGridCheckBoxColumn Binding="{Binding Status}" Header="Статус" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Descriptions}"
+                            Header="Заметки" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>

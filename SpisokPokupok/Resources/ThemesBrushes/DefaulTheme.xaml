@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+
+
+    <!--  ........................ цвета ........................  -->
+
+    <!--  цвет надписей 1  -->
+    <SolidColorBrush x:Key="ColorDLC" Color="White" />
+
+    <!--  Цвет основных элементов  -->
+    <SolidColorBrush x:Key="ColorElement" Color="DimGray" />
+
+    <!--  Цвет фонов  -->
+    <SolidColorBrush x:Key="ColorFont" Color="Gray" />
+
+
+    <!--  цвет линий датагрид  -->
+    <SolidColorBrush x:Key="ColorBorder" Color="#FFAEACAC" />
+
+
+    <!--  Дополнительный цвет  -->
+    <SolidColorBrush x:Key="ColorFontDatagrid" Color="#FF838181" />
+
+</ResourceDictionary>

@@ -1,0 +1,121 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit">
+
+
+
+    <!--  ................................. Датагрид.................................  -->
+
+    <!--  Стиль хедера датагрида  -->
+    <Style x:Key="DatagridColumnHeaderStyle" TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="{DynamicResource ColorElement}" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorDLC}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinWidth" Value="70" />
+        <Setter Property="MinHeight" Value="30" />
+
+    </Style>
+
+    <!--  cell Стиль  -->
+    <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <!--  Стиль столбцов датагрид  -->
+    <Style x:Key="DataGridDemoRowStyle" TargetType="{x:Type DataGridRow}">
+        <Setter Property="Background" Value="Transparent" />
+
+        <Style.Triggers>
+
+            <!--  Тригер на наводку  -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource ColorElement}" />
+            </Trigger>
+
+            <!--  Тригер при выборе  -->
+            <Trigger Property="IsSelected" Value="true">
+                <Setter Property="Background" Value="{DynamicResource ColorBorder}" />
+            </Trigger>
+
+        </Style.Triggers>
+    </Style>
+
+
+
+    <!--  Стиль  датагрида  -->
+
+    <Style x:Key="DataGridTemplate" TargetType="DataGrid">
+
+        <!--  Стили  -->
+        <Setter Property="RowStyle" Value="{DynamicResource DataGridDemoRowStyle}" />
+        <Setter Property="ColumnHeaderStyle" Value="{DynamicResource DatagridColumnHeaderStyle}" />
+        <Setter Property="CellStyle" Value="{DynamicResource DataGridCellStyle}" />
+
+        <!--  Основные настройки  -->
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="RowHeaderWidth" Value="12" />
+        <Setter Property="CanUserResizeColumns" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserSortColumns" Value="False" />
+
+        <!--  Настройка текста  -->
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorDLC}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontFamily" Value="Century Gothic" />
+        <Setter Property="TextBlock.TextAlignment" Value="Center" />
+
+        <!--  Настройка цветов  -->
+        <Setter Property="Background" Value="{DynamicResource ColorFontDatagrid}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource ColorBorder}" />
+        <Setter Property="HorizontalGridLinesBrush" Value="Transparent" />
+
+    </Style>
+    <!--  ................................. Остальное.................................  -->
+
+
+    <!--  Все кнопки  -->
+    <Style TargetType="Button">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="DimGray" />
+    </Style>
+
+
+
+    <!--  Все Текстблоки  -->
+    <Style TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="Century Gothic" />
+        <Setter Property="TextAlignment" Value="Center" />
+    </Style>
+
+
+    <!--  Стиль менюitem  -->
+    <Style TargetType="MenuItem">
+        <Setter Property="Background" Value="{DynamicResource ColorElement}" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+
+    <!--  Стиль текстбоксов  -->
+
+
+    <Style TargetType="TextBox">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorDLC}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="{DynamicResource ColorFont}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontFamily" Value="Century Gothic" />
+    </Style>
+</ResourceDictionary>
