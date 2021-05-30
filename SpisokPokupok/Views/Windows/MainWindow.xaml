@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:SpisokPokupok.Viewmodels"
     Title="MainWindow"
-    Width="650"
+    Width="700"
     Height="500"
     Background="Transparent"
     ResizeMode="NoResize"
@@ -216,10 +216,22 @@
                         SelectedItem="{Binding SelectedTovar}"
                         Style="{DynamicResource DataGridTemplate}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
-                            <DataGridTextColumn Binding="{Binding Price}" Header="Цена" />
-                            <DataGridHyperlinkColumn Binding="{Binding URL}" Header="Ссылка" />
-                            <DataGridCheckBoxColumn Binding="{Binding Status}" Header="Статус" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Name}"
+                                Header="Название" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Price,StringFormat={}{0}₽ }"
+                                Header="Цена" />
+                            <DataGridHyperlinkColumn
+                                Width="*"
+                                Binding="{Binding URL}"
+                                Header="Ссылка" />
+                            <DataGridCheckBoxColumn
+                                Width="*"
+                                Binding="{Binding Status}"
+                                Header="Статус" />
                             <DataGridTextColumn
                                 Width="*"
                                 Binding="{Binding Descriptions}"
