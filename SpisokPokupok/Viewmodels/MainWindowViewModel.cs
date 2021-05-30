@@ -54,10 +54,16 @@ namespace SpisokPokupok.Viewmodels
         /// </summary>
         public ObservableCollection<Cotegory> Cotegory { get; }
 
-       
+
         #endregion
 
-        #region Выбор группы
+        #endregion
+
+        #region Команды
+
+        #region Команды связанные с категориями
+
+        #region Выбор категории
 
         /// <summary>
         /// Регистрирует выбранную котегорию
@@ -65,17 +71,12 @@ namespace SpisokPokupok.Viewmodels
         private Cotegory _SelectedCotegory;
 
         public Cotegory SelectedCotegory
-        { 
-            get => _SelectedCotegory; 
-            set => Set(ref _SelectedCotegory, value); 
+        {
+            get => _SelectedCotegory;
+            set => Set(ref _SelectedCotegory, value);
         }
 
-
         #endregion
-
-        #endregion
-
-        #region Команды
 
         #region Добавление новой категории
 
@@ -88,16 +89,16 @@ namespace SpisokPokupok.Viewmodels
 
         private void OnAddCotegoryCommandExecuted(object p)
         {
-            
-            
 
+  
             var new_cotegory = new Cotegory //подготовка нового элемента в список категорий
             {
                 Name = TextBoxText,
-                Tovar = new ObservableCollection<Tovar>()
+                Tovar = new ObservableCollection<Tovar>(),
             };
 
             Cotegory.Add(new_cotegory); //добавление новой категории в список категорий
+            
 
             TextBoxText = string.Empty;
 
@@ -142,7 +143,75 @@ namespace SpisokPokupok.Viewmodels
 
         }
 
-      
+
+
+        #endregion
+
+        #endregion
+
+        #region Команды связанные с товарами
+
+        #region Выбор товара
+
+        /// <summary>
+        /// Регистрирует выбранный товар
+        /// </summary>
+        private Tovar _SelectedTovar;
+
+        public Tovar SelectedTovar
+        {
+            get => _SelectedTovar;
+            set => Set(ref _SelectedTovar, value);
+        }
+
+        #endregion
+
+        #region Добавление товара
+
+        /// <summary>
+        /// Добавление товара в список категорий
+        /// </summary>
+        public ICommand AddTovarCommand { get; }
+
+        private bool CanAddTovarCommandExecute(object p) => p is Cotegory cotegory && Cotegory.Contains(cotegory);
+
+        private void OnAddTovarCommandExecuted(object p)
+        {
+            if (!(p is Cotegory cotegory)) return;
+
+            var new_tovar = new Tovar
+            {
+                Name = $"Товар",
+                Price = 0,
+                URL = $"URL",
+                Status = false
+            };
+
+            cotegory.Tovar.Add(new_tovar);
+        }
+
+
+        #endregion
+
+        #region удаление товара
+
+        /// <summary>
+        /// Удаление товара
+        /// </summary>
+        public ICommand DeleteTovarCommand { get; }
+
+        private bool CanDeleteTovarCommandExecute(object p) => p is Tovar;
+
+        private void OnDeleteTovarCommandExecuted(object p)
+        {
+            Cotegory cotegory = SelectedCotegory;   
+            if (!(p is Tovar tovar)) return;
+
+            cotegory.Tovar.Remove(tovar);
+           
+        }
+
+        #endregion
 
         #endregion
 
@@ -152,6 +221,8 @@ namespace SpisokPokupok.Viewmodels
         {
             #region команды
 
+            /*--------------------Команды для категорий------------------------*/
+
             AddCotegoryCommand = new LambdaCommand(OnAddCotegoryCommandExecuted, CanAddCotegoryCommandExecute);
 
             DeleteCotegoryCommand = new LambdaCommand(OnDeleteCotegoryCommandExecuted,CanDeleteCotegoryCommandExecute);
@@ -159,11 +230,17 @@ namespace SpisokPokupok.Viewmodels
             ChangeCotegoryCommand = new LambdaCommand(OnChangeCotegoryCommandExecuted, CanChangeCotegoryCommandExecute);
 
 
+            /*--------------------Команды для товаров------------------------*/
+
+            AddTovarCommand = new LambdaCommand(OnAddTovarCommandExecuted, CanAddTovarCommandExecute);
+
+            DeleteTovarCommand = new LambdaCommand(OnDeleteTovarCommandExecuted, CanDeleteTovarCommandExecute);
+
             #endregion
 
             #region Временное заполнение данных пока программа не готова
 
-            var student = Enumerable.Range(1, 5).Select(i => new Tovar()
+            var tovar = Enumerable.Range(1, 5).Select(i => new Tovar()
             {
                 Name = $"Товар{i}",
                 Price = i,
@@ -174,7 +251,7 @@ namespace SpisokPokupok.Viewmodels
             var cotegory = Enumerable.Range(1,5).Select(i => new Cotegory()
             {
                 Name = $"Категория {i}",
-                Tovar = new ObservableCollection<Tovar>(student)
+                Tovar = new ObservableCollection<Tovar>(tovar)
                 
             });
 

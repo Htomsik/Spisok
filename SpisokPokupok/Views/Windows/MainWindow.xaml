@@ -113,7 +113,8 @@
                             Grid.Column="0"
                             Width="25"
                             HorizontalAlignment="Left"
-                            Command="{Binding AddCotegoryCommand, UpdateSourceTrigger=PropertyChanged}">
+                            Command="{Binding AddCotegoryCommand, UpdateSourceTrigger=PropertyChanged}"
+                            ToolTip="Добавить категорию">
                             <StackPanel>
 
                                 <faIc:ImageAwesome
@@ -150,6 +151,7 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
+
                         <!--  Контекстное меню  -->
                         <ListBox.ContextMenu>
                             <ContextMenu>
@@ -158,11 +160,12 @@
                                     CommandParameter="{Binding SelectedCotegory}"
                                     Header="Удалить" />
                                 <MenuItem
-                                    Command="{Binding ChangeCotegoryCommand, UpdateSourceTrigger=PropertyChanged}"
+                                    Command="{Binding ChangeCotegoryCommand}"
                                     CommandParameter="{Binding SelectedCotegory}"
                                     Header="Переименовать" />
                             </ContextMenu>
                         </ListBox.ContextMenu>
+
                     </ListBox>
 
                 </DockPanel>
@@ -184,13 +187,18 @@
                             <ColumnDefinition Width="25" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+
+
+
                         <Button
                             Grid.Column="0"
                             Width="25"
                             HorizontalAlignment="Left"
-                            Command="{Binding AddCotegoryCommand, UpdateSourceTrigger=PropertyChanged}">
-                            <StackPanel>
+                            Command="{Binding AddTovarCommand, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding SelectedCotegory}"
+                            ToolTip="Добавить товар">
 
+                            <StackPanel>
                                 <faIc:ImageAwesome
                                     Margin="2"
                                     Foreground="LightGreen"
@@ -200,11 +208,12 @@
                         </Button>
 
                     </Grid>
-                    
+
                     <!--  Сюда выводится значения в категориях  -->
                     <DataGrid
                         AutoGenerateColumns="False"
                         ItemsSource="{Binding SelectedCotegory.Tovar}"
+                        SelectedItem="{Binding SelectedTovar}"
                         Style="{DynamicResource DataGridTemplate}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
@@ -216,6 +225,16 @@
                                 Binding="{Binding Descriptions}"
                                 Header="Заметки" />
                         </DataGrid.Columns>
+
+                        <!--  Контекстное меню  -->
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem
+                                    Command="{Binding DeleteTovarCommand}"
+                                    CommandParameter="{Binding SelectedTovar}"
+                                    Header="Удалить" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                     </DataGrid>
 
                 </DockPanel>
