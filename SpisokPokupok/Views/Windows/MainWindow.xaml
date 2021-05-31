@@ -50,6 +50,10 @@
                 <MenuItem Header="Создать" />
                 <MenuItem Header="Сохранить как" />
             </MenuItem>
+
+            <MenuItem Header="О программе">
+                
+            </MenuItem>
         </Menu>
         <!--  Верхняя панель  -->
         <Grid Background="{DynamicResource ColorElement}" MouseLeftButtonDown="DragpanelMove">
@@ -65,9 +69,10 @@
                 Grid.Column="2"
                 Height="25"
                 Margin="280,0,0,0"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Command="{StaticResource CommandCloseApplication}">
+                Command="{StaticResource CommandCloseApplication}"
+                ToolTip="Выход из приложения">
                 <faIc:ImageAwesome
                     Margin="2"
                     Foreground="{DynamicResource ColorDLC}"
@@ -115,6 +120,7 @@
                             HorizontalAlignment="Left"
                             Command="{Binding AddCotegoryCommand, UpdateSourceTrigger=PropertyChanged}"
                             ToolTip="Добавить категорию">
+
                             <StackPanel>
 
                                 <faIc:ImageAwesome
@@ -123,6 +129,7 @@
                                     Icon="Solid_Plus" />
 
                             </StackPanel>
+
                         </Button>
 
                         <!--  Текстбокс для ввода названия новой группы/переименования  -->
@@ -131,7 +138,8 @@
                             x:Name="_AddCotegotyTextBox"
                             Grid.Column="1"
                             Margin="5,0,0,0"
-                            Text="{Binding TextBoxText, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding TextBoxText, UpdateSourceTrigger=PropertyChanged}"
+                            ToolTip="Принимает название новой/редактируемой категории" />
 
                     </Grid>
 
@@ -147,11 +155,18 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Name}" />
                                     <TextBlock Margin="5,0" Text="{Binding Tovar.Count, StringFormat=[{0}]}" />
-
                                 </StackPanel>
+
+                          
+
                             </DataTemplate>
+
+                    
+
                         </ListBox.ItemTemplate>
 
+                        
+                        
                         <!--  Контекстное меню  -->
                         <ListBox.ContextMenu>
                             <ContextMenu>
@@ -181,6 +196,7 @@
                 Header="{Binding SelectedCotegory.Name}">
                 <DockPanel>
 
+
                     <!--  Нижняя панель  -->
                     <Grid Margin="5" DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
@@ -188,7 +204,11 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-
+                        <!--  Тестовые текстблок  -->
+                        <TextBlock
+                            x:Name="TestTextBlock"
+                            Grid.Column="1"
+                            Text="{Binding SelectedTovarIndex,UpdateSourceTrigger=PropertyChanged}" />
 
                         <Button
                             Grid.Column="0"
@@ -211,6 +231,7 @@
 
                     <!--  Сюда выводится значения в категориях  -->
                     <DataGrid
+                        SelectedIndex="{Binding SelectedTovarIndex,UpdateSourceTrigger=PropertyChanged}"
                         AutoGenerateColumns="False"
                         ItemsSource="{Binding SelectedCotegory.Tovar}"
                         SelectedItem="{Binding SelectedTovar}"
@@ -222,7 +243,7 @@
                                 Header="Название" />
                             <DataGridTextColumn
                                 Width="*"
-                                Binding="{Binding Price,StringFormat={}{0}₽ }"
+                                Binding="{Binding Price, StringFormat={}{0}₽}"
                                 Header="Цена" />
                             <DataGridHyperlinkColumn
                                 Width="*"

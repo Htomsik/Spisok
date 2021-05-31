@@ -119,7 +119,12 @@ namespace SpisokPokupok.Viewmodels
         {
             if (!(p is Cotegory cotegory)) return;
 
+            var cotegory_index = Cotegory.IndexOf(cotegory);
+
             Cotegory.Remove(cotegory);
+
+            if (cotegory_index < Cotegory.Count)
+                SelectedCotegory = Cotegory[cotegory_index];
         }
 
         #endregion
@@ -150,6 +155,23 @@ namespace SpisokPokupok.Viewmodels
         #endregion
 
         #region Команды связанные с товарами
+
+        #region index товара
+
+        /// <summary>
+        /// Возвращает Index выбраного товара
+        /// </summary>
+
+        private int _SelectedTovarIndex;
+
+        public int SelectedTovarIndex
+        {
+            get => _SelectedTovarIndex;
+            set => Set(ref _SelectedTovarIndex, value);
+        }
+
+
+        #endregion
 
         #region Выбор товара
 
@@ -207,8 +229,14 @@ namespace SpisokPokupok.Viewmodels
             Cotegory cotegory = SelectedCotegory;   
             if (!(p is Tovar tovar)) return;
 
+            
+
             cotegory.Tovar.Remove(tovar);
-           
+            
+          //  if(SelectedTovarIndex<cotegory.Tovar.Count)
+         //  SelectedTovarIndex=cotegory.Tovar[SelectedTovarIndex];
+
+
         }
 
         #endregion

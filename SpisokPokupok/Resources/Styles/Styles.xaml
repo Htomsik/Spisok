@@ -40,6 +40,8 @@
                 <Setter Property="Background" Value="{DynamicResource ColorBorder}" />
             </Trigger>
 
+            
+          
         </Style.Triggers>
     </Style>
 
@@ -83,7 +85,7 @@
     <Style TargetType="Button">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="DimGray" />
-      
+
     </Style>
 
 
@@ -108,8 +110,6 @@
 
 
     <!--  Стиль текстбоксов  -->
-
-
     <Style TargetType="TextBox">
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Foreground" Value="{DynamicResource ColorDLC}" />
@@ -118,5 +118,13 @@
         <Setter Property="Background" Value="{DynamicResource ColorFont}" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontFamily" Value="Century Gothic" />
+    </Style>
+
+    <!--  Стиль подсказок  -->
+    <Style TargetType="ToolTip">
+        <Setter Property="Background" Value="{DynamicResource ColorFont}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+
     </Style>
 </ResourceDictionary>
