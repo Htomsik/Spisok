@@ -27,7 +27,6 @@
     <!--  Стиль столбцов датагрид  -->
     <Style x:Key="DataGridDemoRowStyle" TargetType="{x:Type DataGridRow}">
         <Setter Property="Background" Value="Transparent" />
-
         <Style.Triggers>
 
             <!--  Тригер на наводку  -->
@@ -40,8 +39,8 @@
                 <Setter Property="Background" Value="{DynamicResource ColorBorder}" />
             </Trigger>
 
-            
-          
+
+
         </Style.Triggers>
     </Style>
 

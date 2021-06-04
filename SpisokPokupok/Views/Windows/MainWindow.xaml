@@ -5,6 +5,7 @@
     xmlns:com="clr-namespace:SpisokPokupok.Infrastructures.Commands"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:faIc="http://schemas.fontawesome.com/icons/"
+    xmlns:ia="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:SpisokPokupok"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:SpisokPokupok.Viewmodels"
@@ -22,39 +23,15 @@
         <vm:MainWindowViewModel />
     </Window.DataContext>
 
-    <!--  Добавление ресурсов  -->
-    <Window.Resources>
-        <ResourceDictionary>
-            <com:CloseApplicationCommand x:Key="CommandCloseApplication" />
-        </ResourceDictionary>
-
-    </Window.Resources>
-
     <!--  Вся форма (Ничего не добавлять на нее!)  -->
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <!--  Меню  -->
-        <Menu
-            Grid.Row="1"
-            Background="{DynamicResource ColorElement}"
-            BorderBrush="{DynamicResource ColorBorder}"
-            BorderThickness="2">
 
-            <MenuItem Header="Файл">
-                <MenuItem Header="Открыть" />
-                <MenuItem Header="Создать" />
-                <MenuItem Header="Сохранить как" />
-            </MenuItem>
 
-            <MenuItem Header="О программе">
-                
-            </MenuItem>
-        </Menu>
         <!--  Верхняя панель  -->
         <Grid Background="{DynamicResource ColorElement}" MouseLeftButtonDown="DragpanelMove">
 
@@ -71,14 +48,12 @@
                 Margin="280,0,0,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Command="{StaticResource CommandCloseApplication}"
+                Command="{Binding SaveDataANDClosing}"
                 ToolTip="Выход из приложения">
                 <faIc:ImageAwesome
                     Margin="2"
                     Foreground="{DynamicResource ColorDLC}"
                     Icon="Solid_Times" />
-
-
 
             </Button>
 
@@ -105,24 +80,21 @@
             <!--  Список категорий  -->
             <GroupBox BorderThickness="0" Header="Категория">
 
-                <!--  Кнопки  -->
+
                 <DockPanel>
 
+
+
+
                     <!--  Панель снизу  -->
-                    <Grid Margin="5" DockPanel.Dock="Bottom">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="25" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                    <DockPanel DockPanel.Dock="Bottom">
+
                         <Button
-                            Grid.Column="0"
                             Width="25"
-                            HorizontalAlignment="Left"
                             Command="{Binding AddCotegoryCommand, UpdateSourceTrigger=PropertyChanged}"
                             ToolTip="Добавить категорию">
 
                             <StackPanel>
-
                                 <faIc:ImageAwesome
                                     Margin="2"
                                     Foreground="LightGreen"
@@ -133,22 +105,23 @@
                         </Button>
 
                         <!--  Текстбокс для ввода названия новой группы/переименования  -->
-
                         <TextBox
-                            x:Name="_AddCotegotyTextBox"
-                            Grid.Column="1"
                             Margin="5,0,0,0"
                             Text="{Binding TextBoxText, UpdateSourceTrigger=PropertyChanged}"
                             ToolTip="Принимает название новой/редактируемой категории" />
 
-                    </Grid>
+                    </DockPanel>
 
                     <!--  Категории  -->
                     <ListBox
+                        Margin="0,5"
                         Background="Transparent"
                         ItemsSource="{Binding Cotegory}"
                         SelectedIndex="0"
-                        SelectedItem="{Binding SelectedCotegory}">
+                        SelectedItem="{Binding SelectedCotegory}"
+                        VirtualizingPanel.IsContainerVirtualizable="True"
+                        VirtualizingPanel.IsVirtualizing="True"
+                        VirtualizingPanel.VirtualizationMode="Recycling">
 
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -157,16 +130,19 @@
                                     <TextBlock Margin="5,0" Text="{Binding Tovar.Count, StringFormat=[{0}]}" />
                                 </StackPanel>
 
-                          
+
 
                             </DataTemplate>
-
-                    
-
                         </ListBox.ItemTemplate>
+                        <!--  Шаблон для контейнера  -->
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
 
-                        
-                        
+
+
                         <!--  Контекстное меню  -->
                         <ListBox.ContextMenu>
                             <ContextMenu>
@@ -198,17 +174,14 @@
 
 
                     <!--  Нижняя панель  -->
-                    <Grid Margin="5" DockPanel.Dock="Bottom">
+                    <Grid DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="25" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
                         <!--  Тестовые текстблок  -->
-                        <TextBlock
-                            x:Name="TestTextBlock"
-                            Grid.Column="1"
-                            Text="{Binding SelectedTovarIndex,UpdateSourceTrigger=PropertyChanged}" />
+
 
                         <Button
                             Grid.Column="0"
@@ -231,9 +204,12 @@
 
                     <!--  Сюда выводится значения в категориях  -->
                     <DataGrid
-                        SelectedIndex="{Binding SelectedTovarIndex,UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0,5"
                         AutoGenerateColumns="False"
+                        BorderBrush="{DynamicResource ColorBorder}"
+                        EnableRowVirtualization="True"
                         ItemsSource="{Binding SelectedCotegory.Tovar}"
+                        SelectedIndex="{Binding SelectedTovarIndex, UpdateSourceTrigger=PropertyChanged}"
                         SelectedItem="{Binding SelectedTovar}"
                         Style="{DynamicResource DataGridTemplate}">
                         <DataGrid.Columns>
@@ -245,7 +221,7 @@
                                 Width="*"
                                 Binding="{Binding Price, StringFormat={}{0}₽}"
                                 Header="Цена" />
-                            <DataGridHyperlinkColumn
+                            <DataGridTextColumn
                                 Width="*"
                                 Binding="{Binding URL}"
                                 Header="Ссылка" />

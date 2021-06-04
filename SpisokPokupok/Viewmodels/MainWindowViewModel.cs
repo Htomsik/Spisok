@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using SpisokPokupok.Infrastructures.Commands;
+using SpisokPokupok.Services;
+using System.Windows;
 
 namespace SpisokPokupok.Viewmodels
 {
@@ -54,6 +56,18 @@ namespace SpisokPokupok.Viewmodels
         /// </summary>
         public ObservableCollection<Cotegory> Cotegory { get; }
 
+
+        #endregion
+
+        #endregion
+
+        #region Сервисы
+
+        #region dataservice
+        /// <summary>
+        /// Обьект класса сервисов
+        /// </summary>
+        DataService DataService;
 
         #endregion
 
@@ -119,12 +133,14 @@ namespace SpisokPokupok.Viewmodels
         {
             if (!(p is Cotegory cotegory)) return;
 
-            var cotegory_index = Cotegory.IndexOf(cotegory);
+            var cotegory_index = Cotegory.IndexOf(cotegory)-1;
 
             Cotegory.Remove(cotegory);
 
-            if (cotegory_index < Cotegory.Count)
+            if (cotegory_index < Cotegory.Count && Cotegory.Count!=0)
                 SelectedCotegory = Cotegory[cotegory_index];
+
+          
         }
 
         #endregion
@@ -243,6 +259,27 @@ namespace SpisokPokupok.Viewmodels
 
         #endregion
 
+        #region команды связанные с dataservice
+
+        #region сохранение данных при закрытии
+
+        public ICommand SaveDataANDClosing { get; }
+
+        private bool CanSaveDataANDClosingExecute(object p) => true;
+
+        private void OnSaveDataANDClosingExecute(object p)
+        {
+            DataService = new DataService();
+
+            DataService.SaveData(Cotegory);
+
+            Application.Current.Shutdown();
+        }
+        #endregion
+
+        #endregion
+
+
         #endregion
 
         public MainWindowViewModel()
@@ -264,28 +301,21 @@ namespace SpisokPokupok.Viewmodels
 
             DeleteTovarCommand = new LambdaCommand(OnDeleteTovarCommandExecuted, CanDeleteTovarCommandExecute);
 
-            #endregion
 
-            #region Временное заполнение данных пока программа не готова
+            /*--------------------Команды dataservice------------------------*/
 
-            var tovar = Enumerable.Range(1, 5).Select(i => new Tovar()
-            {
-                Name = $"Товар{i}",
-                Price = i,
-                URL = $"URL{i}",
-                Status= false
-            }) ;
-
-            var cotegory = Enumerable.Range(1,5).Select(i => new Cotegory()
-            {
-                Name = $"Категория {i}",
-                Tovar = new ObservableCollection<Tovar>(tovar)
-                
-            });
-
-            Cotegory = new ObservableCollection<Cotegory>(cotegory);
+            SaveDataANDClosing = new LambdaCommand(OnSaveDataANDClosingExecute, CanSaveDataANDClosingExecute);
 
             #endregion
+
+            #region получение данных из json файла
+
+            DataService = new DataService();
+
+            Cotegory = DataService.GetData();
+
+            #endregion
+
         }
 
 

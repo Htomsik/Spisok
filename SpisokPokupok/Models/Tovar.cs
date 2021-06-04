@@ -50,7 +50,6 @@ namespace SpisokPokupok.Models
         /// <summary>
         /// Коллекция товаров
         /// </summary>
-
         private ICollection<Tovar> tovar;
 
         public ICollection<Tovar> Tovar 
