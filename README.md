@@ -64,8 +64,8 @@
 - При удалении последней категории при попытке фокуса на категорию (-1) возникает вылет
 ---
 ## __Ссылки на авторов__
-[![Артём](https://img.shields.io/badge/-Артём-1C1C22?style=for-the-badge&logo=vk&logoColor=red)](https://m.vk.com/id506987182)
-[![Костя](https://img.shields.io/badge/-Костя-1C1C22?style=for-the-badge&logo=vk&logoColor=blue)](https://m.vk.com/jessnjake)
+[![Артём](https://img.shields.io/badge/-Артём-1C1C22?style=for-the-badge&logo=vk&logoColor=red)](https://vk.com/id506987182)
+[![Костя](https://img.shields.io/badge/-Костя-1C1C22?style=for-the-badge&logo=vk&logoColor=blue)](https://vk.com/jessnjake)
 
 
 
